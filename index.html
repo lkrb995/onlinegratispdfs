@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca de Trading - PDFs Gratis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #1a1a2e;
+            color: white;
+            min-height: 100vh;
+        }
+
+        header {
+            background: linear-gradient(135deg, #16213e, #0f3460);
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 3px solid #e94560;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: #e94560;
+        }
+
+        header p {
+            color: #a0a0a0;
+            font-size: 1.1em;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .pdf-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .pdf-card {
+            background: #16213e;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid #0f3460;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pdf-card:hover {
+            transform: translateY(-5px);
+            border-color: #e94560;
+            box-shadow: 0 10px 30px rgba(233, 69, 96, 0.3);
+        }
+
+        .pdf-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .pdf-card h3 {
+            color: #e94560;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .pdf-card p {
+            color: #a0a0a0;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #e94560, #c23152);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            font-weight: bold;
+        }
+
+        .download-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(233, 69, 96, 0.5);
+        }
+
+        .download-btn:disabled {
+            background: #555;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Modal del anuncio */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: #16213e;
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            border: 2px solid #e94560;
+        }
+
+        .modal-content h2 {
+            color: #e94560;
+            margin-bottom: 15px;
+        }
+
+        .ad-box {
+            background: #0f3460;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 2px dashed #e94560;
+        }
+
+        .ad-box p {
+            margin: 10px 0;
+            font-size: 1.1em;
+        }
+
+        .ad-highlight {
+            color: #e94560;
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+
+        .countdown {
+            font-size: 3em;
+            color: #e94560;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #0f3460;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .progress {
+            height: 100%;
+            background: #e94560;
+            width: 0%;
+            transition: width 1s linear;
+        }
+
+        .download-now {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 25px;
+            font-size: 1.2em;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .download-now:disabled {
+            background: #555;
+            cursor: not-allowed;
+        }
+
+        .close-btn {
+            background: #e94560;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #a0a0a0;
+            margin-top: 40px;
+            border-top: 1px solid #0f3460;
+        }
+
+        .search-box {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .search-box input {
+            padding: 12px 20px;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 25px;
+            border: 2px solid #0f3460;
+            background: #16213e;
+            color: white;
+            font-size: 1.1em;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #e94560;
+        }
+
+        .counter {
+            background: #0f3460;
+            padding: 10px 20px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>📈 Biblioteca de Trading</h1>
+        <p>Descarga libros profesionales de trading viendo un breve anuncio</p>
+        <div class="counter">
+            📚 <span id="totalLibros">18</span> Libros Disponibles
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Buscador -->
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="🔍 Buscar libro de trading..." onkeyup="filtrarLibros()">
+        </div>
+
+        <!-- Grid de PDFs -->
+        <div class="pdf-grid" id="pdfGrid">
+            <!-- Los PDFs se generan aquí automáticamente -->
+        </div>
+    </div>
+
+    <!-- Modal de anuncio -->
+    <div class="modal" id="adModal">
+        <div class="modal-content">
+            <h2>📢 Apoya la Biblioteca</h2>
+            <p>Mira este anuncio para descargar gratis</p>
+            
+            <div class="ad-box">
+                <p>🌟 <strong>¡OFERTA ESPECIAL!</strong></p>
+                <p>Curso Completo de Trading</p>
+                <p class="ad-highlight">50% DESCUENTO</p>
+                <p>www.tradingpro.com</p>
+            </div>
+
+            <div class="countdown" id="countdown">5</div>
+            
+            <div class="progress-bar">
+                <div class="progress" id="progressBar"></div>
+            </div>
+
+            <button class="download-now" id="downloadNowBtn" disabled>
+                ⏳ Espera 5 segundos...
+            </button>
+            
+            <button class="close-btn" onclick="cerrarModal()">
+                Cancelar
+            </button>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2024 Biblioteca de Trading | Contenido gratuito mantenido con publicidad</p>
+        <p>📧 Contacto: tradingbiblioteca@gmail.com</p>
+    </footer>
+
+    <script>
+        // 📚 AQUI CONFIGURAS TUS 18 LIBROS DE TRADING
+        // Solo cambia los títulos y nombres de archivo
+        
+        const libros = [
+            { titulo: "Análisis Técnico Avanzado", archivo: "pdfs/libro1.pdf", icono: "📊" },
+            { titulo: "Trading para Principiantes", archivo: "pdfs/libro2.pdf", icono: "📘" },
+            { titulo: "Psicología del Trading", archivo: "pdfs/libro3.pdf", icono: "🧠" },
+            { titulo: "Velas Japonesas", archivo: "pdfs/libro4.pdf", icono: "🕯️" },
+            { titulo: "Forex Master", archivo: "pdfs/libro5.pdf", icono: "💱" },
+            { titulo: "Criptomonedas Trading", archivo: "pdfs/libro6.pdf", icono: "₿" },
+            { titulo: "Opciones Financieras", archivo: "pdfs/libro7.pdf", icono: "📈" },
+            { titulo: "Day Trading Pro", archivo: "pdfs/libro8.pdf", icono: "💹" },
+            { titulo: "Swing Trading", archivo: "pdfs/libro9.pdf", icono: "📉" },
+            { titulo: "Gestión de Riesgo", archivo: "pdfs/libro10.pdf", icono: "🛡️" },
+            { titulo: "Patrones Gráficos", archivo: "pdfs/libro11.pdf", icono: "📐" },
+            { titulo: "Trading Algorítmico", archivo: "pdfs/libro12.pdf", icono: "🤖" },
+            { titulo: "Bolsa para Principiantes", archivo: "pdfs/libro13.pdf", icono: "📗" },
+            { titulo: "Indicadores Técnicos", archivo: "pdfs/libro14.pdf", icono: "📏" },
+            { titulo: "Estrategias de Scalping", archivo: "pdfs/libro15.pdf", icono: "⚡" },
+            { titulo: "Futuros y Derivados", archivo: "pdfs/libro16.pdf", icono: "📋" },
+            { titulo: "Inversión a Largo Plazo", archivo: "pdfs/libro17.pdf", icono: "🏦" },
+            { titulo: "Trading Institucional", archivo: "pdfs/libro18.pdf", icono: "🏛️" }
+        ];
+
+        let libroSeleccionado = null;
+        let countdownTimer = null;
+        let segundos = 5;
+
+        // Cargar libros al iniciar
+        function cargarLibros(filtro = '') {
+            const grid = document.getElementById('pdfGrid');
+            const filtrados = libros.filter(libro => 
+                libro.titulo.toLowerCase().includes(filtro.toLowerCase())
+            );
+
+            document.getElementById('totalLibros').textContent = filtrados.length;
+
+            grid.innerHTML = filtrados.map((libro, index) => `
+                <div class="pdf-card">
+                    <div class="pdf-icon">${libro.icono}</div>
+                    <h3>${libro.titulo}</h3>
+                    <p>Libro de trading profesional</p>
+                    <button class="download-btn" onclick="iniciarDescarga(${libros.indexOf(libro)})">
+                        ⬇️ Descargar PDF
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function filtrarLibros() {
+            const filtro = document.getElementById('searchInput').value;
+            cargarLibros(filtro);
+        }
+
+        function iniciarDescarga(index) {
+            libroSeleccionado = libros[index];
+            segundos = 5;
+            
+            document.getElementById('adModal').style.display = 'flex';
+            document.getElementById('countdown').textContent = segundos;
+            document.getElementById('progressBar').style.width = '0%';
+            
+            const btn = document.getElementById('downloadNowBtn');
+            btn.disabled = true;
+            btn.textContent = '⏳ Espera ' + segundos + ' segundos...';
+            
+            iniciarCountdown();
+        }
+
+        function iniciarCountdown() {
+            clearInterval(countdownTimer);
+            
+            countdownTimer = setInterval(() => {
+                segundos--;
+                document.getElementById('countdown').textContent = segundos;
+                document.getElementById('downloadNowBtn').textContent = '⏳ Espera ' + segundos + ' segundos...';
+                
+                const progreso = ((5 - segundos) / 5) * 100;
+                document.getElementById('progressBar').style.width = progreso + '%';
+                
+                if (segundos <= 0) {
+                    clearInterval(countdownTimer);
+                    const btn = document.getElementById('downloadNowBtn');
+                    btn.disabled = false;
+                    btn.textContent = '⬇️ ¡DESCARGAR AHORA!';
+                    btn.onclick = descargarPDF;
+                }
+            }, 1000);
+        }
+
+        function descargarPDF() {
+            if (!libroSeleccionado) return;
+            
+            // Crear enlace de descarga
+            const link = document.createElement('a');
+            link.href = libroSeleccionado.archivo;
+            link.download = libroSeleccionado.titulo + '.pdf';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            cerrarModal();
+            alert('✅ ¡Descarga iniciada! Gracias por tu apoyo.');
+        }
+
+        function cerrarModal() {
+            document.getElementById('adModal').style.display = 'none';
+            clearInterval(countdownTimer);
+            libroSeleccionado = null;
+            segundos = 5;
+        }
+
+        // Cerrar modal al hacer clic fuera
+        document.getElementById('adModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                cerrarModal();
+            }
+        });
+
+        // Cargar todo al inicio
+        cargarLibros();
+    </script>
+</body>
+</html>
